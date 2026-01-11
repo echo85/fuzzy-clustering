@@ -37,11 +37,6 @@
 *.synctex(busy)
 *.pdfsync
 
-# PDF Output (Optional)
-# It is generally best practice NOT to version control the PDF,
-# but to generate it. If you want to keep the PDF, remove the line below.
-*.pdf
-
 # TeX editors temporary files
 # VS Code (LaTeX Workshop)
 .vscode/
