@@ -1,2 +1,60 @@
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
+# Core LaTeX auxiliary files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.lb
+
+# Bibliography auxiliary files (BibTeX/Biber)
+*.bbl
+*.bcf
+*.blg
+*.-blx.aux
+*.run.xml
+
+# Index and Glossary files
+*.idx
+*.ind
+*.ilg
+*.gls
+*.glo
+*.glg
+*.glsdefs
+*.ist
+
+# Build tool artifacts (latexmk, etc.)
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.pdfsync
+
+# PDF Output (Optional)
+# It is generally best practice NOT to version control the PDF,
+# but to generate it. If you want to keep the PDF, remove the line below.
+*.pdf
+
+# TeX editors temporary files
+# VS Code (LaTeX Workshop)
+.vscode/
+# Overleaf
+.chktex
+# WinEdt
+*.bak
+*.sav
+# Texpad
+.texpadtmp
+# Kile
+*.backup
+
+# Operating System junk
+.DS_Store
+Thumbs.db
