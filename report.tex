@@ -42,12 +42,13 @@ Finally all the features were scaled using z-score normalization (\cite{scikit-l
 
 \section{Hard C-Means Clustering: A Hard Approach}
 C-Means is a popular hard clustering algorithm that partitions data into $k$ distinct, non-overlapping clusters. Each data point is assigned to the cluster whose centroid is closest. 
-All this type of algorithms are base on an objective function $J$ which **quantifies the quality** of the cluster models and **must be minimized** to obtain optimal cluster.
+All this type of algorithms are based on an objective function $J$ which \emph{quantifies the quality} of the cluster models and **must be minimized** to obtain optimal cluster.
 The algorithm goal is to minimize the objective function $J$. For the hard C-Means this function is the sum of squared distances between each data point and the center of the cluster it belong to.
 
 $$J_h(X,U_h,C) = \sum^c_{i=1}\sum^n_{j=1} u_{ij} 
 d^2_{ij}$$
 
+The visualization below shows the customer clusters projected onto two principal components (PCA). Note that PCA is used here strictly for visualization to reduce dimensions; the clustering itself was performed on the full feature set to ensure accuracy.
 
 % FIGURE: C-Means PCA
 \begin{figure}[H]
@@ -116,7 +117,12 @@ While C-Means portrays clusters as distinct islands (see Figure \ref{fig:kmeans_
 
 \subsection{Membership Certainty Analysis}
 The histogram below quantifies how strongly customers belong to their primary cluster. We observe a significant number of customers falling into the "Medium" and "Low" certainty ranges, proving that a hard label would be an oversimplification for these individuals.
-
+Out of 2713 customers, the distribution reveals distinct strategic groups:
+\begin{itemize}
+    \item \textbf{Core Customers (High Certainty >80\%):} 
+    1771 customers (65.3\%). These customers fit perfectly into standard personas. Standard marketing campaigns for their specific segment will be highly effective.
+    \item \textbf{Bridge Customers (Medium/Low Certainty <80\%):}  942 customers (34.7\%). Roughly one-third of the customer base does not fit neatly into a single box.
+\end{itemize}
 % FIGURE: Distribution
 \begin{figure}[H]
     \centering
@@ -125,6 +131,9 @@ The histogram below quantifies how strongly customers belong to their primary cl
     \label{fig:distribution}
 \end{figure}
 
+Unlike K-Means, which would force these 942 "Bridge Customers" into a single segment, 
+FCM identifies them as prime targets for migration strategies. 
+For example, a customer with 45\% membership in "Budget" and 45\% in "Premium" is likely price-sensitive but aspires to higher quality. 
 \subsection{Case Study: Hybrid Customers}
 To prove the failure of hard labels, we isolated the top 10 most "hybrid" customers. As shown in Figure \ref{fig:hybrid}, these customers have nearly equal probabilities of belonging to multiple clusters (e.g., Cluster 2 and Cluster 3). C-Means would arbitrarily force them into one, losing valuable marketing data.
 
