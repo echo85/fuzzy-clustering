@@ -4,7 +4,7 @@ Clustering is a fundamental unsupervised machine learning technique used to grou
 
 Traditional clustering algorithms, such as **C-Means**, assign each data point to exactly one cluster, a concept known as hard clustering. 
 
-However, in many real-world scenarios, especially in complex domains like e-commerce, customers may exhibit characteristics that belong to multiple segments simultaneously. This is where **fuzzy clustering**, particularly Probabilist Fuzzy C-Means (FCM), offers a significant advantage by allowing data points to have partial membership in multiple clusters.
+However, in many real-world scenarios, especially in complex domains like e-commerce, customers may exhibit characteristics that belong to multiple segments simultaneously. This is where **fuzzy clustering**, particularly Probabilistic Fuzzy C-Means (FCM), offers a significant advantage by allowing data points to have partial membership in multiple clusters.
 
 This report will explore the advantages of fuzzy clustering over hard clustering methods, using an e-commerce customer segmentation example based on the provided Python notebook. 
 
