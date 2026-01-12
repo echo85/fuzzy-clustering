@@ -76,7 +76,27 @@ $$J_f(X,U_f,C) =\sum_{i=1}^c \sum_{j=1}^n u_{ij}^m \cdot d_{ij}^2$$
 Where parameter $m > 1$ determines the fuzziness of the classification, clusters become softer/harder with higher/lower value of $m$. 
 
 \section{Evaluation Metrics}
-To quantitatively assess the quality of the clustering and validate the choice of parameters, two primary metrics were utilized: the Silhouette Score for geometric separation and the Fuzzy Partition Coefficient (FPC) for structural validity.
+To quantitatively assess the quality of the clustering and validate the choice of parameters, we utilized three primary metrics: Inertia for internal cohesion, the Silhouette Score for geometric separation, and the Fuzzy Partition Coefficient (FPC) for structural validity.
+\subsection{Inertia (Within-Cluster Sum of Squares)}
+Inertia measures the internal coherence of the clusters. For Hard C-Means (K-Means), it corresponds directly to the objective function $J_h$ that the algorithm minimizes. It is calculated as the sum of squared distances between each data point and the centroid of its assigned cluster:
+
+\begin{equation}
+\text{Inertia} = \sum_{i=1}^k \sum_{x \in C_i} || x - \mu_i ||^2
+\end{equation}
+
+Where:
+\begin{itemize}
+    \item $k$ is the number of clusters.
+    \item $C_i$ is the set of points assigned to cluster $i$.
+    \item $\mu_i$ is the centroid of cluster $i$.
+\end{itemize}
+
+**Interpretation:**
+Lower inertia values indicate that data points are closer to their cluster centroids, implying tighter, more dense clusters. However, Inertia has two key limitations:
+\begin{enumerate}
+    \item **Scale Dependency:** It is not a normalized metric (unlike the Silhouette Score), meaning its value depends on the number of samples and the scale of the features.
+    \item **Geometry Assumption:** It assumes that clusters are convex and isotropic (spherical). It struggles to evaluate the irregular, elongated clusters often found in complex customer behavior data \cite{jain1988algorithms}.
+\end{enumerate}
 
 \subsection{Silhouette Score}
 The Silhouette Score is a measure of how similar an object is to its own cluster (cohesion) compared to other clusters (separation) \cite{rousseeuw1987silhouettes}. The silhouette value $s(i)$ for a single data point $i$ is defined as:
@@ -134,15 +154,6 @@ The C-Means evaluation (Figure \ref{fig:metrics}a) suggests that $k=5$ is a reas
     \label{fig:metrics}
 \end{figure}
 
-\subsection{Metric Interpretation: Why "Hard" Boundaries Fail}
-A critical finding in this experiment lies in the Silhouette Scores:
-\begin{itemize}
-    \item \textbf{C-Means Silhouette Score:} 0.3821
-    \item \textbf{Fuzzy C-Means Silhouette Score:} 0.3092
-\end{itemize}
-
-In traditional clustering, a score near 0 indicates overlapping clusters. While this might be viewed as a negative result in other domains, in e-commerce customer behavior, it serves as \textbf{validation for the Fuzzy approach}. The low scores confirm that the customer base forms a continuous spectrum of behavior rather than distinct, isolated islands. A hard clustering algorithm like C-Means is mathematically forced to draw arbitrary lines through this data, whereas FCM accurately models the inherent ambiguity.
-
 \subsection{Parameter Sensitivity and Validation}
 To ensure the robustness of our segmentation, we conducted a sensitivity analysis by varying the number of clusters ($k$) and the fuzziness parameter ($m$). We used the \textbf{Fuzzy Partition Coefficient (FPC)} as our primary validation metric. The FPC ranges from 0 to 1, where a value closer to 1 indicates distinct, well-structured clusters.
 
@@ -171,6 +182,16 @@ The table below summarizes the FPC scores across different configurations:
     \item \textbf{Sensitivity to Fuzziness:} There is a dramatic drop in FPC when $m$ increases from 1.5 to 2.0. For $m \geq 1.5$, the FPC values approach their mathematical floor ($1/k$), indicating that the dataset is highly sensitive to fuzziness. If we apply too much "softness," the algorithm fails to find distinct centers.
     \item \textbf{Selection of Optimal Configuration:} While $k=2$ yields the highest structural score, it is too broad for actionable segmentation. We selected \textbf{$k=5$ with $m=1.5$} as the optimal trade-off. It maintains a relatively high FPC (0.754), ensuring the clusters are mathematically distinct enough to be useful, while providing enough granularity for targeted marketing.
 \end{enumerate}
+
+\subsection{Metric Interpretation: Why "Hard" Boundaries Fail}
+A critical finding in this experiment lies in the Silhouette Scores:
+\begin{itemize}
+    \item \textbf{C-Means Silhouette Score:} 0.3821
+    \item \textbf{Fuzzy C-Means Silhouette Score:} 0.3092
+\end{itemize}
+
+In traditional clustering, a score near 0 indicates overlapping clusters. While this might be viewed as a negative result in other domains, in e-commerce customer behavior, it serves as \textbf{validation for the Fuzzy approach}. The low scores confirm that the customer base forms a continuous spectrum of behavior rather than distinct, isolated islands. A hard clustering algorithm like C-Means is mathematically forced to draw arbitrary lines through this data, whereas FCM accurately models the inherent ambiguity.
+
 \subsection{Visualizing Transitional Customers}
 While C-Means portrays clusters as distinct islands (see Figure \ref{fig:kmeans_hard}), Fuzzy C-Means reveals the "transitional" nature of customers. In Figure \ref{fig:transitional}, the color scale represents uncertainty. Yellow points indicate customers with high uncertainty (low max membership), meaning they sit between clusters.
 
